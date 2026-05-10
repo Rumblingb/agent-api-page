@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent API — Utility Endpoints for AI Agents | Tools for LLM Agents</title>
+  <meta name="description" content="Agent API provides structured JSON utility APIs for AI agents: JSON formatting, token counting, QR generation, color palettes, domain history, and JWT decoding. $9/month unlimited.">
+  <meta name="keywords" content="Agent API for AI agents, utility API endpoints, tools for LLM agents, JSON API, token counter API, QR code API, color palette API, domain history API, JWT decoder API">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Agent API — Utility Endpoints for AI Agents">
+  <meta property="og:description" content="Structured JSON APIs for AI agents. JSON formatting, token counting, QR codes, color palettes, domain history, JWT decoding.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agent API — Utility Endpoints for AI Agents">
+  <meta name="twitter:description" content="Structured JSON APIs for AI agents. JSON formatting, token counting, QR codes, color palettes, domain history, JWT decoding.">
+  <link rel="canonical" href="https://rumblingb.github.io/jacks-toolbox/">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0a0b;--bg-card:#141416;--bg-card-hover:#1a1a1e;--border:#222226;--text:#e4e4e7;--text-muted:#a1a1aa;--text-dim:#71717a;--accent:#7c5cff;--accent-hover:#6a4de6;--accent-glow:rgba(124,92,255,0.15);--green:#22c55e;--green-bg:rgba(34,197,94,0.08);--red:#ef4444;--yellow:#eab308;--font:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter","Roboto",sans-serif;--mono:"SF Mono","Fira Code","JetBrains Mono","Consolas",monospace}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased}
+    .container{max-width:1100px;margin:0 auto;padding:0 24px}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,10,11,0.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    nav .container{display:flex;align-items:center;justify-content:space-between;height:60px}
+    .logo{font-weight:700;font-size:18px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px}
+    .logo span{color:var(--accent)}
+    .nav-links{display:flex;gap:28px;align-items:center}
+    .nav-links a{color:var(--text-muted);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{background:var(--accent);color:#fff!important;padding:8px 18px;border-radius:8px;font-weight:600;transition:all 0.2s}
+    .nav-cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.2s;cursor:pointer;border:none;font-family:var(--font)}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+    .btn-secondary{background:var(--bg-card);color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{background:var(--bg-card-hover);border-color:var(--text-dim)}
+    .btn-ghost{background:transparent;color:var(--text-muted);padding:12px 20px}
+    .btn-ghost:hover{color:var(--text);background:var(--bg-card)}
+    .hero{text-align:center;padding:100px 0 70px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(124,92,255,0.08) 0%,transparent 70%);pointer-events:none}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-glow);border:1px solid rgba(124,92,255,0.2);color:var(--accent);padding:6px 16px;border-radius:100px;font-size:13px;font-weight:600;margin-bottom:28px}
+    .hero h1{font-size:clamp(36px,5.5vw,64px);font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:20px}
+    .hero h1 span{background:linear-gradient(135deg,var(--accent),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:clamp(16px,2vw,20px);color:var(--text-muted);max-width:650px;margin:0 auto 40px;line-height:1.7}
+    .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .hero-meta{display:flex;gap:30px;justify-content:center;margin-top:50px;flex-wrap:wrap}
+    .hero-meta-item{display:flex;align-items:center;gap:8px;color:var(--text-dim);font-size:14px}
+    .hero-meta-item svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2}
+    section{padding:80px 0}
+    section h2{font-size:clamp(26px,3vw,36px);font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;text-align:center}
+    section .subtitle{text-align:center;color:var(--text-muted);font-size:16px;max-width:580px;margin:0 auto 50px;line-height:1.7}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .feature-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:all 0.25s;position:relative;overflow:hidden}
+    .feature-card:hover{background:var(--bg-card-hover);border-color:rgba(124,92,255,0.2);transform:translateY(-2px)}
+    .feature-card .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;border:1px solid var(--border);background:var(--bg)}
+    .feature-card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em}
+    .feature-card p{font-size:14px;color:var(--text-muted);line-height:1.7}
+    .feature-card .method{display:inline-block;background:var(--accent-glow);color:var(--accent);font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-bottom:10px;letter-spacing:0.02em}
+    .pricing-grid{display:flex;gap:24px;justify-content:center;align-items:stretch;flex-wrap:wrap}
+    .pricing-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:36px 32px;flex:1;min-width:280px;max-width:420px;display:flex;flex-direction:column;transition:all 0.25s;position:relative}
+    .pricing-card:hover{border-color:rgba(124,92,255,0.2);transform:translateY(-3px)}
+    .pricing-card.featured{border-color:var(--accent);background:linear-gradient(180deg,rgba(124,92,255,0.05) 0%,var(--bg-card) 100%)}
+    .pricing-card.featured::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em}
+    .pricing-card .tier{font-size:14px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+    .pricing-card .price{font-size:42px;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px}
+    .pricing-card .price span{font-size:16px;font-weight:500;color:var(--text-muted)}
+    .pricing-card .desc{color:var(--text-muted);font-size:14px;margin-bottom:24px}
+    .pricing-card .features{list-style:none;margin-bottom:28px;flex:1}
+    .pricing-card .features li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:14px;color:var(--text);line-height:1.5}
+    .pricing-card .features li svg{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+    .pricing-card .btn{width:100%;justify-content:center;padding:14px}
+    .check-icon{stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .demo{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .demo-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .demo-tab{padding:14px 20px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font)}
+    .demo-tab:hover{color:var(--text);background:var(--bg)}
+    .demo-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--bg)}
+    .demo-content{padding:0}
+    .demo-pane{display:none;padding:0}
+    .demo-pane.active{display:block}
+    .demo-request{background:#0d0d10;padding:20px 24px;border-bottom:1px solid var(--border)}
+    .demo-request .label{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+    .demo-request code{font-family:var(--mono);font-size:13px;color:var(--text);line-height:1.6;display:block;white-space:pre;overflow-x:auto}
+    .demo-request .endpoint{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;margin-bottom:12px}
+    .demo-request .endpoint .method{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase}
+    .method-post{background:rgba(34,197,94,0.12);color:var(--green)}
+    .method-get{background:rgba(59,130,246,0.12);color:#3b82f6}
+    .demo-response{background:#0d0d10;padding:20px 24px}
+    .demo-response .label{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+    .demo-response pre{font-family:var(--mono);font-size:13px;color:var(--text);line-height:1.6;overflow-x:auto;white-space:pre;margin:0}
+    .demo-response .status{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-bottom:10px}
+    .status-ok{background:rgba(34,197,94,0.12);color:var(--green)}
+    .quickstart-code{background:#0d0d10;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:40px}
+    .quickstart-code .header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-dim)}
+    .quickstart-code .header .dots{display:flex;gap:6px}
+    .quickstart-code .header .dots span{width:10px;height:10px;border-radius:50%;display:block}
+    .quickstart-code .header .dots span:nth-child(1){background:#ef4444}
+    .quickstart-code .header .dots span:nth-child(2){background:#eab308}
+    .quickstart-code .header .dots span:nth-child(3){background:#22c55e}
+    .quickstart-code pre{font-family:var(--mono);font-size:13px;line-height:1.7;padding:20px;overflow-x:auto;color:#e4e4e7;margin:0}
+    .quickstart-code pre .comment{color:#6b7280}
+    .quickstart-code pre .keyword{color:#a78bfa}
+    .quickstart-code pre .string{color:#22c55e}
+    .quickstart-code pre .variable{color:#fbbf24}
+    .quickstart-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:50px}
+    .step-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;display:flex;gap:16px;align-items:flex-start}
+    .step-card .num{width:32px;height:32px;border-radius:8px;background:var(--accent-glow);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+    .step-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+    .step-card p{font-size:13px;color:var(--text-muted);line-height:1.6}
+    footer{border-top:1px solid var(--border);padding:50px 0 40px}
+    footer .container{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px}
+    footer .col h4{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-bottom:14px}
+    footer .col a{display:block;color:var(--text-muted);text-decoration:none;font-size:14px;padding:4px 0;transition:color 0.2s}
+    footer .col a:hover{color:var(--text)}
+    footer .copyright{text-align:center;padding-top:30px;font-size:13px;color:var(--text-dim);width:100%}
+    .glow-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);margin-right:6px;vertical-align:middle}
+    .status-indicator{display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:13px;margin-top:6px}
+    @media(max-width:768px){
+      .hero{padding:70px 0 50px}
+      section{padding:50px 0}
+      nav .container{height:54px}
+      .nav-links a:not(.nav-cta){display:none}
+      .features-grid{grid-template-columns:1fr}
+      .pricing-grid{flex-direction:column;align-items:center}
+      .pricing-card{max-width:400px}
+      .quickstart-steps{grid-template-columns:1fr}
+      footer .container{flex-direction:column;gap:24px}
+    }
+    @media(max-width:480px){
+      .container{padding:0 16px}
+      .hero h1{font-size:30px}
+      .hero-actions{flex-direction:column;align-items:center}
+      .hero-actions .btn{width:100%;justify-content:center}
+      .demo-tabs{flex-wrap:nowrap}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">Agent <span>API</span></a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#demo">Demo</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="https://rumblingb.github.io/jacks-toolbox/" class="nav-cta" target="_blank">Get API Key</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        v1.0.0 &middot; API for AI Agents
+      </div>
+      <h1><span>Agent API</span><br>Utility Endpoints for AI Agents</h1>
+      <p>Structured JSON APIs purpose-built for LLM agents, tool-calling systems, and autonomous AI workflows. JSON formatting, token counting, QR codes, color palettes, domain history, and JWT decoding — all in one clean API.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Subscribe &mdash; $9/mo
+        </a>
+        <a href="#demo" class="btn btn-secondary">Try Live Demo</a>
+        <a href="https://rumblingb.github.io/jacks-toolbox/" target="_blank" class="btn btn-ghost">Get Free Key &rarr;</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          7 utility endpoints
+        </div>
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Free: 100 requests/day
+        </div>
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Pro: unlimited access
+        </div>
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          JSON responses &middot; API key auth
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <h2>Everything your agent needs</h2>
+      <p class="subtitle">Seven purpose-built endpoints that give your AI agent superpowers &mdash; from formatting messy JSON to decoding JWTs.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">&#8203;<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <div class="method">POST /api/format/json</div>
+          <h3>JSON Formatter</h3>
+          <p>Parse, validate, and pretty-print any JSON text. Customizable indentation, sorted keys, and detailed error reporting with line/column positions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div class="method">POST /api/validate/json</div>
+          <h3>JSON Validator</h3>
+          <p>Check if text is valid JSON. Returns validation result with parsed type, byte size, and detailed error messages with line/column for invalid input.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+          <div class="method">POST /api/count/tokens</div>
+          <h3>Token Counter</h3>
+          <p>Estimate token counts for GPT-4, GPT-3.5, Claude 3, Claude Sonnet 4, Llama 3, Gemini Pro, and DeepSeek. Returns characters, words, and tokens per char.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="8" y="8" width="8" height="8"/><line x1="3" y1="3" x2="21" y2="21"/></svg></div>
+          <div class="method">POST /api/generate/qr</div>
+          <h3>QR Code Generator</h3>
+          <p>Generate QR codes for any text or URL. Returns PNG image URLs or base64-encoded data. Configurable size — perfect for sharing links, wifi configs, and more.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <div class="method">POST /api/generate/palette</div>
+          <h3>Color Palette Generator</h3>
+          <p>Generate color palettes in four schemes: complementary, analogous, triadic, and monochromatic. Specify a base hex color or get a random one. Returns CSS variables and gradient previews.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="method">POST /api/domain/history</div>
+          <h3>Domain History Lookup</h3>
+          <p>Look up historical snapshots of any website via the Internet Archive Wayback Machine. Get the latest snapshot URL, timestamp, and calendar data for any year.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="method">POST /api/decode/jwt</div>
+          <h3>JWT Decoder</h3>
+          <p>Decode JWT tokens without verifying the signature. Returns header, payload, signature algorithm, token type, expiration, issuer, and subject fields — perfect for debugging.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="container">
+      <h2>Simple, transparent pricing</h2>
+      <p class="subtitle">Start for free with 100 requests per day. Upgrade to Pro for unlimited access and priority support.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="tier">Free</div>
+          <div class="price">$0 <span>/ month</span></div>
+          <div class="desc">For experimentation and small projects</div>
+          <ul class="features">
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              100 requests per day
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              All 7 endpoints
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              API key authentication
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              JSON responses
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Community support
+            </li>
+          </ul>
+          <a href="https://rumblingb.github.io/jacks-toolbox/" target="_blank" class="btn btn-secondary">Get Free Key</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="tier">Pro</div>
+          <div class="price">$9 <span>/ month</span></div>
+          <div class="desc">For production AI agents and teams</div>
+          <ul class="features">
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Unlimited requests
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              All 7 endpoints
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Priority rate limits
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Priority support
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Early access to new endpoints
+            </li>
+          </ul>
+          <a href="https://buy.stripe.com/aFaaEZ0qX97Se6cfrt1oI0j" target="_blank" class="btn btn-primary">Subscribe &mdash; $9/mo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="container">
+      <h2>Live API Demo</h2>
+      <p class="subtitle">Click through the tabs to see example API calls and their structured JSON responses.</p>
+      <div class="demo">
+        <div class="demo-tabs">
+          <button class="demo-tab active" data-tab="demo-format">JSON Format</button>
+          <button class="demo-tab" data-tab="demo-tokens">Token Count</button>
+          <button class="demo-tab" data-tab="demo-palette">Palette</button>
+          <button class="demo-tab" data-tab="demo-jwt">JWT Decode</button>
+          <button class="demo-tab" data-tab="demo-domain">Domain History</button>
+          <button class="demo-tab" data-tab="demo-qr">QR Code</button>
+        </div>
+
+        <div class="demo-content">
+          <div class="demo-pane active" id="demo-format">
+            <div class="demo-request">
+              <div class="label">Request</div>
+              <div class="endpoint"><span class="method method-post">POST</span> /api/format/json</div>
+              <code>{
+  "text": "{\"name\": \"Agent API\", \"version\": 1, \"endpoints\": [\"json\", \"tokens\", \"qr\", \"palette\"]}",
+  "indent": 2,
+  "sort_keys": true
+}</code>
+            </div>
+            <div class="demo-response">
+              <div class="label">Response <span class="status status-ok">200 OK</span></div>
+              <pre>{
+  "success": true,
+  "formatted": "{\n  \"endpoints\": [\n    \"json\",\n    \"tokens\",\n    \"qr\",\n    \"palette\"\n  ],\n  \"name\": \"Agent API\",\n  \"version\": 1\n}",
+  "type": "dict",
+  "length": 108,
+  "size_bytes": 108
+}</pre>
+            </div>
+          </div>
+
+          <div class="demo-pane" id="demo-tokens">
+            <div class="demo-request">
+              <div class="label">Request</div>
+              <div class="endpoint"><span class="method method-post">POST</span> /api/count/tokens</div>
+              <code>{
+  "text": "The quick brown fox jumps over the lazy dog. This is a sample text for token counting across different AI models.",
+  "model": "gpt-4"
+}</code>
+            </div>
+            <div class="demo-response">
+              <div class="label">Response <span class="status status-ok">200 OK</span></div>
+              <pre>{
+  "text": "The quick brown fox jumps over the lazy dog...",
+  "characters": 103,
+  "words": 20,
+  "model": "gpt-4",
+  "estimated_tokens": 25,
+  "tokens_per_char": 0.25
+}</pre>
+            </div>
+          </div>
+
+          <div class="demo-pane" id="demo-palette">
+            <div class="demo-request">
+              <div class="label">Request</div>
+              <div class="endpoint"><span class="method method-post">POST</span> /api/generate/palette</div>
+              <code>{
+  "type": "analogous",
+  "base_color": "#7c5cff",
+  "count": 5
+}</code>
+            </div>
+            <div class="demo-response">
+              <div class="label">Response <span class="status status-ok">200 OK</span></div>
+              <pre>{
+  "success": true,
+  "type": "analogous",
+  "base_color": "#7c5cff",
+  "colors": [
+    "#7c5cff",
+    "#6e57ff",
+    "#6052ff",
+    "#524dff",
+    "#4448ff"
+  ],
+  "count": 5,
+  "hex_codes": [
+    "#7c5cff",
+    "#6e57ff",
+    "#6052ff",
+    "#524dff",
+    "#4448ff"
+  ],
+  "css_variables": {
+    "--color-1": "#7c5cff",
+    "--color-2": "#6e57ff",
+    "--color-3": "#6052ff",
+    "--color-4": "#524dff",
+    "--color-5": "#4448ff"
+  },
+  "preview_gradient": "linear-gradient(135deg, #7c5cff, #6e57ff, #6052ff, #524dff, #4448ff)"
+}</pre>
+            </div>
+          </div>
+
+          <div class="demo-pane" id="demo-jwt">
+            <div class="demo-request">
+              <div class="label">Request</div>
+              <div class="endpoint"><span class="method method-post">POST</span> /api/decode/jwt</div>
+              <code>{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFnZW50IEFQSSIsImlhdCI6MTUxNjIzOTAyMiwiZXhwIjoxNTE2MjQyNjIyfQ.abc123"
+}</code>
+            </div>
+            <div class="demo-response">
+              <div class="label">Response <span class="status status-ok">200 OK</span></div>
+              <pre>{
+  "success": true,
+  "header": {
+    "alg": "HS256",
+    "typ": "JWT"
+  },
+  "payload": {
+    "sub": "1234567890",
+    "name": "Agent API",
+    "iat": 1516239022,
+    "exp": 1516242622
+  },
+  "signature": "abc123...",
+  "signature_algorithm": "HS256",
+  "token_type": "JWT",
+  "expires_at": 1516242622,
+  "issued_at": 1516239022,
+  "subject": "1234567890",
+  "issuer": null
+}</pre>
+            </div>
+          </div>
+
+          <div class="demo-pane" id="demo-domain">
+            <div class="demo-request">
+              <div class="label">Request</div>
+              <div class="endpoint"><span class="method method-post">POST</span> /api/domain/history</div>
+              <code>{
+  "domain": "example.com",
+  "year": 2024,
+  "limit": 10
+}</code>
+            </div>
+            <div class="demo-response">
+              <div class="label">Response <span class="status status-ok">200 OK</span></div>
+              <pre>{
+  "domain": "example.com",
+  "snapshots": [],
+  "total_snapshots": 0,
+  "latest_snapshot": {
+    "url": "https://web.archive.org/web/20240510120000/https://example.com/",
+    "timestamp": "20240510120000",
+    "date": "2024-05-10",
+    "time": "12:00",
+    "status": "200"
+  },
+  "latest_url": "https://web.archive.org/web/20240510120000/https://example.com/",
+  "calendar_year": 2024,
+  "collections": 1
+}</pre>
+            </div>
+          </div>
+
+          <div class="demo-pane" id="demo-qr">
+            <div class="demo-request">
+              <div class="label">Request</div>
+              <div class="endpoint"><span class="method method-post">POST</span> /api/generate/qr</div>
+              <code>{
+  "text": "https://rumblingb.github.io/jacks-toolbox/",
+  "size": 300,
+  "format": "png"
+}</code>
+            </div>
+            <div class="demo-response">
+              <div class="label">Response <span class="status status-ok">200 OK</span></div>
+              <pre>{
+  "success": true,
+  "format": "png",
+  "image_url": "/api/generate/qr/image?text=https%3A%2F%2Frumblingb.github.io%2Fjacks-toolbox%2F",
+  "data": "https://rumblingb.github.io/jacks-toolbox/",
+  "size": 300
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quickstart">
+    <div class="container">
+      <h2>Get started in 30 seconds</h2>
+      <p class="subtitle">Grab your free API key and start making requests. Here's everything you need to know.</p>
+
+      <div class="quickstart-steps">
+        <div class="step-card">
+          <div class="num">1</div>
+          <div>
+            <h4>Get your API key</h4>
+            <p>Register for a free API key at <strong>Jack's Toolbox</strong>. You'll receive a key starting with <code>jsk_</code> — 100 free requests per day.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="num">2</div>
+          <div>
+            <h4>Make API calls</h4>
+            <p>Send your API key in the <code>X-API-Key</code> header (optional for anonymous access with IP-based rate limiting).</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="num">3</div>
+          <div>
+            <h4>Parse JSON responses</h4>
+            <p>All endpoints return clean, structured JSON — perfect for AI agent tool-calling, OpenAI function calling, and LangChain tools.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quickstart-code">
+        <div class="header">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>curl &mdash; Format JSON</span>
+        </div>
+        <pre><span class="comment"># Format and validate JSON</span>
+curl -X POST https://your-server.com/api/format/json \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -H <span class="string">"X-API-Key: jsk_your_free_api_key_here"</span> \
+  -d <span class="string">'{"text": "{\"hello\": \"world\", \"nested\": [1, 2, 3]}", "indent": 2}'</span>
+
+<span class="comment"># Count tokens (GPT-4)</span>
+curl -X POST https://your-server.com/api/count/tokens \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"text": "Your text here", "model": "gpt-4"}'</span>
+
+<span class="comment"># Generate a QR code</span>
+curl -X POST https://your-server.com/api/generate/qr \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"text": "https://example.com", "format": "base64"}'</span>
+
+<span class="comment"># Generate a color palette</span>
+curl -X POST https://your-server.com/api/generate/palette \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"type": "triadic", "base_color": "#7c5cff"}'</span>
+
+<span class="comment"># Look up domain history</span>
+curl -X POST https://your-server.com/api/domain/history \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"domain": "example.com", "year": 2024}'</span>
+
+<span class="comment"># Decode a JWT token</span>
+curl -X POST https://your-server.com/api/decode/jwt \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.abc"}'</span></pre>
+      </div>
+
+      <div style="text-align:center;margin-top:10px">
+        <a href="https://rumblingb.github.io/jacks-toolbox/" target="_blank" class="btn btn-primary">
+          Get Your Free API Key &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div>
+        <div class="logo" style="margin-bottom:12px">Agent <span>API</span></div>
+        <p style="color:var(--text-dim);font-size:13px;max-width:300px">Utility endpoints purpose-built for AI agents and LLM tool-calling systems.</p>
+      </div>
+      <div class="col">
+        <h4>Resources</h4>
+        <a href="https://rumblingb.github.io/jacks-toolbox/" target="_blank">Jack's Toolbox</a>
+        <a href="https://github.com/rumblingb" target="_blank">GitHub</a>
+      </div>
+      <div class="col">
+        <h4>Ecosystem</h4>
+        <a href="https://mcp.directory/" target="_blank">MCP Directory</a>
+        <a href="https://rumblingb.github.io/jacks-toolbox/" target="_blank">API Key Portal</a>
+      </div>
+      <div class="col">
+        <h4>API</h4>
+        <a href="#features">Endpoints</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#quickstart">Quickstart</a>
+      </div>
+      <div class="copyright">
+        &copy; 2026 Agent API &mdash; Built on <a href="https://rumblingb.github.io/jacks-toolbox/" style="color:var(--accent);text-decoration:none">Jack's Toolbox</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.demo-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.demo-pane').forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
